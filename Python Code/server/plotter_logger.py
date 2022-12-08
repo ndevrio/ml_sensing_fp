@@ -17,6 +17,7 @@ CHUNK = 1000      # buffer size for socket
 buffer_size = 500
 phone_keys = ['unix_timestamp', 'acc_x', 'acc_y', 'acc_z', 'quart_x', 'quart_y', 'quart_z', 'quart_w', 'grav_x', 'grav_y', 'grav_z', 'roll', 'pitch', 'yaw'] 
 classes = ['Left front pocket', 'Right front pocket', 'Back left pocket', 'Back right pocket', 'Tote bag']
+class_names = ['front_left_pocket', 'front_right_pocket', 'back_left_pocket', 'back_right_pocket']
 current_class = 0
 
 class_buffer = np.zeros((buffer_size, 1)) # init with zero
@@ -185,7 +186,7 @@ OUT_UDP_IP = "127.0.0.1"
 def save_data_file():
     global save_data
 
-    outfile = "data/pocket_raw_data_" + time.strftime("%Y%m%d_%H%M%S")
+    outfile = "data/pocket_raw_data_" + class_names[current_class] + '_' + time.strftime("%Y%m%d_%H%M%S") 
 
     if(len(save_data) == 0):
         print('Saved nothing')
