@@ -57,15 +57,15 @@ for i in range(len(classes)):
         raw_data.append(t)
 
 
-processed_data = np.zeros((num_windows, window_size, 9))
+processed_data = np.zeros((num_windows, window_size, 6))
 processed_labels = np.zeros((num_windows,))
 def preprocessing():
     global processed_data, processed_labels
     p_idx = 0
 
     for i in range(len(raw_data)):
-        d = np.zeros((raw_data[i].shape[0], 9))
-        d = raw_data[i][:, :-4]
+        d = np.zeros((raw_data[i].shape[0], 6))
+        d = raw_data[i][:, :-7]
         """for j in range(6):        
             # [1] Noise filtering
             # Median filter
@@ -85,7 +85,7 @@ def preprocessing():
                 d[:, j+6] = z_grav"""
 
         # [3] Split continuous data into windows with 50% overlap
-        processed_d = np.zeros((int(d.shape[0]*(1/overlap)/window_size)-int((1/overlap)-1), window_size, 9))
+        processed_d = np.zeros((int(d.shape[0]*(1/overlap)/window_size)-int((1/overlap)-1), window_size, 6))
         for k in range(len(processed_d)):
             processed_d[k] = d[int(k*overlap*window_size):int(k*overlap*window_size)+window_size] 
         
@@ -98,7 +98,7 @@ def preprocessing():
 class Motion1DCNN(nn.Module):
     def __init__(self):
         super(Motion1DCNN, self).__init__()
-        self.conv1 = nn.Conv1d(in_channels=9, out_channels=64, kernel_size=3, padding=1)
+        self.conv1 = nn.Conv1d(in_channels=6, out_channels=64, kernel_size=3, padding=1)
         self.conv2 = nn.Conv1d(in_channels=64, out_channels=64, kernel_size=3, padding=1)
 
         self.bn1 = nn.BatchNorm1d(64)
@@ -163,7 +163,7 @@ def main():
         model = Motion1DCNN().to(device)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(model.parameters(), lr=1e-3)
-        num_epoch = 20
+        num_epoch = 30
 
         ########################
         ###  Model training  ###
@@ -222,7 +222,7 @@ def main():
     print(np.mean(cmat, axis=0))
 
     print("============== Saving model ==============")
-    torch.save(model.state_dict(), 'models/best_' + target_dir)
+    torch.save(model.state_dict(), 'models/best_4' + target_dir)
     print("Saved.")
 
 

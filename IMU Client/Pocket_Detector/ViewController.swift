@@ -75,9 +75,9 @@ class ViewController: UIViewController {
         self.hideKeyboardWhenTapped()
         
         // proximity
-        /*UIDevice.current.isProximityMonitoringEnabled = true
+        UIDevice.current.isProximityMonitoringEnabled = true
         let notificationName = Notification.Name(rawValue: "UIDeviceProximityStateDidChangeNotification")
-        NotificationCenter.default.addObserver(self, selector: #selector(proximityStateDidChange), name: notificationName, object: nil)*/
+        NotificationCenter.default.addObserver(self, selector: #selector(proximityStateDidChange), name: notificationName, object: nil)
         
         // background
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground),
@@ -94,16 +94,16 @@ class ViewController: UIViewController {
         phoneSamplingRatePickerView.selectRow(23, inComponent: 0, animated: false)
     }
     
-    /*@objc func proximityStateDidChange(notification: Notification) {
+    @objc func proximityStateDidChange(notification: Notification) {
       if let device = notification.object as? UIDevice {
         
         let currentProximityState = device.proximityState
           guard let socketClient = socketClient else {
               return
           }
-          socketClient.send(text: "proximity: \(currentProximityState)")
+          socketClient.send(text: "proximity:\(currentProximityState)")
       }
-    }*/
+    }
     
     @objc func didEnterBackground(_ notification: Notification) {
         guard let socketClient = socketClient else {
