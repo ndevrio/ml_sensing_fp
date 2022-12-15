@@ -10,6 +10,7 @@ import UIKit
 import WatchConnectivity
 import NearbyInteraction
 import CoreBluetooth
+import AVFoundation
 
 class ViewController: UIViewController {
     
@@ -48,6 +49,13 @@ class ViewController: UIViewController {
     var iPhoneTokenCharacteristic: CBMutableCharacteristic?
     let tokenServiceUUID: CBUUID = CBUUID(string:"2AC0B600-7C0C-4C9D-AB71-072AE2037107")
     let iPhoneTokenCharacteristicUUID: CBUUID = CBUUID(string:"2AC0B602-7C0C-4C9D-AB71-072AE2037107")
+    
+    // AVFoundation
+    var session: AVCaptureSession!
+    var input: AVCaptureInput!
+    var output: AVCaptureOutput!
+    var previewLayer: AVCaptureVideoPreviewLayer!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,7 +162,6 @@ class ViewController: UIViewController {
         tokenService = CBMutableService(type: tokenServiceUUID, primary: true)
         tokenService?.characteristics = [iPhoneTokenCharacteristic!]
     }*/
-    
     
     private func updateSocketStatusLabel(status: Bool) {
         DispatchQueue.main.async {
